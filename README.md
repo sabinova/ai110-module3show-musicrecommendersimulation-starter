@@ -14,17 +14,36 @@ Each `Song` carries the following features: genre, mood, energy (0–1), tempo_b
  
 A `UserProfile` stores: favorite_genre, favorite_mood, target_energy, and likes_acoustic. These represent the user's ideal "vibe" that every song gets compared against.
  
-The scoring logic (the "Algorithm Recipe") works like this for each song:
+### Algorithm Recipe
  
-- **Genre match:** +2.0 points if the song's genre matches the user's favorite genre. Genre carries the most weight because it tends to be the strongest signal of musical preference — recommending rock to a pop listener is usually a bigger miss than getting the energy level slightly off.
-- **Mood match:** +1.0 point if the song's mood matches the user's favorite mood. Mood matters, but less than genre. A user who wants "happy pop" would likely still enjoy "intense pop" more than "happy jazz."
-- **Energy similarity:** Up to +1.0 point based on how close the song's energy is to the user's target. Calculated as `1.0 - abs(song_energy - target_energy)`. A song with energy 0.82 scores 0.98 against a target of 0.80, while a song at 0.30 only scores 0.50.
+Each song is scored against the user's profile using these rules:
+ 
+| Feature | Type | Rule | Max Points |
+|---|---|---|---|
+| Genre | Categorical | +2.0 if exact match | 2.0 |
+| Mood | Categorical | +1.0 if exact match | 1.0 |
+| Energy | Numerical | `1.0 - abs(song_energy - user_energy)` | 1.0 |
+| Valence | Numerical | `0.5 × (1.0 - abs(song_valence - 0.5))` | 0.5 |
+| Danceability | Numerical | `0.5 × (1.0 - abs(song_danceability - 0.5))` | 0.5 |
+| Acousticness | Boolean bonus | +0.3 if `likes_acoustic` is True and acousticness > 0.7 | 0.3 |
+ 
+**Maximum possible score: 5.3 points.**
+ 
+Genre carries the most weight because it tends to be the strongest signal of taste — recommending rock to a pop listener is usually a bigger miss than getting the energy slightly wrong. Mood matters but less so. The numerical features (energy, valence, danceability) reward closeness to the user's target rather than just high or low values. The acoustic bonus is a simple flag that lets the system distinguish users who prefer stripped-down, organic sounds.
  
 Once every song has a score, the system sorts them from highest to lowest and returns the top K results along with the reasons each song earned its points.
  
-**Expected bias:** Because genre has the highest weight (2.0), the system will tend to favor songs in the user's preferred genre even when songs from other genres might better match their mood and energy preferences. This is a deliberate trade-off — genre acts as a strong filter, which could create a filter bubble over time.
+### Data Flow
  
-Data flow: **Input** (User Preferences) → **Process** (Loop through every song, score it using the algorithm recipe) → **Output** (Top K ranked recommendations with explanations).
+**Input** (User Preferences) → **Process** (Loop through every song, score it) → **Output** (Top K ranked recommendations with explanations)
+ 
+See [`recommender_flowchart.md`](recommender_flowchart.md) for the full Mermaid.js diagram.
+ 
+### Expected Biases
+ 
+- **Genre dominance:** Because genre is worth 2.0 out of 5.3 possible points, the system will favor songs in the user's preferred genre even when other genres better match their mood and energy. This creates a filter bubble — users only see more of what they already said they like.
+- **Catalog imbalance:** The dataset has more lofi songs (3) than most other genres (1 each). Users who prefer underrepresented genres like jazz or ambient will get fewer strong matches, not because the algorithm is wrong but because the data is thin.
+- **Neutral midpoint assumption:** Valence and danceability are scored against a fixed midpoint of 0.5 since the user profile doesn't include targets for those. This slightly penalizes songs at the extremes and favors "middle of the road" tracks.
 
 ---
 
