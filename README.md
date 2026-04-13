@@ -2,32 +2,29 @@
 
 ## Project Summary
 
-In this project you will build and explain a small music recommender system.
-
-Your goal is to:
-
-- Represent songs and a user "taste profile" as data
-- Design a scoring rule that turns that data into recommendations
-- Evaluate what your system gets right and wrong
-- Reflect on how this mirrors real world AI recommenders
-
-Replace this paragraph with your own summary of what your version does.
+This project is a content-based music recommender built in Python. Unlike collaborative filtering, which relies on behavior from many users to find patterns (like Spotify's "users who liked X also liked Y"), this system works purely by comparing song attributes against a single user's taste profile. Each song in the catalog has features like genre, mood, energy, and danceability. The user provides their preferences, and the system scores every song based on how closely it matches, then returns the top results with explanations for each recommendation. It is designed for classroom exploration, not real-world use.
 
 ---
 
 ## How The System Works
 
-Explain your design in plain language.
-
-Some prompts to answer:
-
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
-
-You can include a simple diagram or bullet list if helpful.
+This recommender uses a content-based filtering approach. It takes a user's taste profile and compares it against every song in a small CSV catalog to find the best matches.
+ 
+Each `Song` carries the following features: genre, mood, energy (0–1), tempo_bpm, valence (0–1), danceability (0–1), and acousticness (0–1). Genre and mood are categorical — they either match the user's preference or they don't. The numerical features allow the system to measure closeness rather than requiring an exact match.
+ 
+A `UserProfile` stores: favorite_genre, favorite_mood, target_energy, and likes_acoustic. These represent the user's ideal "vibe" that every song gets compared against.
+ 
+The scoring logic (the "Algorithm Recipe") works like this for each song:
+ 
+- **Genre match:** +2.0 points if the song's genre matches the user's favorite genre. Genre carries the most weight because it tends to be the strongest signal of musical preference — recommending rock to a pop listener is usually a bigger miss than getting the energy level slightly off.
+- **Mood match:** +1.0 point if the song's mood matches the user's favorite mood. Mood matters, but less than genre. A user who wants "happy pop" would likely still enjoy "intense pop" more than "happy jazz."
+- **Energy similarity:** Up to +1.0 point based on how close the song's energy is to the user's target. Calculated as `1.0 - abs(song_energy - target_energy)`. A song with energy 0.82 scores 0.98 against a target of 0.80, while a song at 0.30 only scores 0.50.
+ 
+Once every song has a score, the system sorts them from highest to lowest and returns the top K results along with the reasons each song earned its points.
+ 
+**Expected bias:** Because genre has the highest weight (2.0), the system will tend to favor songs in the user's preferred genre even when songs from other genres might better match their mood and energy preferences. This is a deliberate trade-off — genre acts as a strong filter, which could create a filter bubble over time.
+ 
+Data flow: **Input** (User Preferences) → **Process** (Loop through every song, score it using the algorithm recipe) → **Output** (Top K ranked recommendations with explanations).
 
 ---
 
