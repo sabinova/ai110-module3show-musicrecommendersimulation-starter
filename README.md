@@ -45,6 +45,10 @@ See [`recommender_flowchart.md`](recommender_flowchart.md) for the full Mermaid.
 - **Catalog imbalance:** The dataset has more lofi songs (3) than most other genres (1 each). Users who prefer underrepresented genres like jazz or ambient will get fewer strong matches, not because the algorithm is wrong but because the data is thin.
 - **Neutral midpoint assumption:** Valence and danceability are scored against a fixed midpoint of 0.5 since the user profile doesn't include targets for those. This slightly penalizes songs at the extremes and favors "middle of the road" tracks.
 
+### CLI Output
+
+![CLI recommendations output](screenshots/cli_output.png)
+
 ---
 
 ## Getting Started
