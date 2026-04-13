@@ -73,3 +73,9 @@ Four user profiles were tested:
 ---
 
 ## 9. Personal Reflection
+
+The biggest learning moment for me was the Classical Energetic edge case. I expected the system to recommend high-energy music since the user wanted energy at 0.9, but instead it put Winter Sonata — a slow, melancholic classical piece — at #1 just because the genre matched. That one test made the concept of filter bubbles click for me in a way that reading about them never did. The system was technically doing exactly what I told it to do, but the result was clearly wrong. It showed me that the weights you choose aren't just numbers — they encode assumptions about what matters, and those assumptions can quietly steer the whole system in a bad direction.
+
+Working with AI tools helped me move faster, especially for scaffolding the project structure and generating the expanded dataset. But I had to double-check things like file path handling — the initial code broke because the CSV path was relative to the working directory, not the project root. That was a good reminder that generated code can look correct and still fail in your specific setup.
+
+What surprised me most is how simple the algorithm really is. It's just addition and sorting. There's no machine learning, no neural network — just a loop that adds up points and picks the highest scores. And yet when I ran the Chill Lofi profile and saw Midnight Coding and Library Rain at the top, it genuinely felt like a real recommendation. That gap between how simple the system is and how "smart" it feels is something I'll think about differently now when I use Spotify or YouTube.

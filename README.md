@@ -116,11 +116,9 @@ Read and complete `model_card.md`:
 
 [**Model Card**](model_card.md)
 
-Write 1 to 2 paragraphs here about what you learned:
-
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
-
+Building this recommender taught me that the journey from raw data to a recommendation is shorter than I expected — and that's exactly what makes it risky. The entire system boils down to a scoring function that adds up points and sorts. There's no deep understanding of music happening, just pattern matching on numbers. But when the results came back for profiles like the Chill Lofi Studier, the top 5 felt right. That illusion of intelligence from simple math is what real platforms scale up with millions of users and songs, and now I understand why those systems can feel so personalized while still having blind spots.
+ 
+The clearest example of where bias shows up was the weight experiment. By giving genre 2.0 points — the single largest contributor — I accidentally made the system prioritize genre loyalty over actual vibe. A user who said they liked classical but wanted high energy got a slow, sad song instead of an energetic one. That's the same kind of problem real recommender systems face: the design choices engineers make about what to prioritize get baked into every recommendation, and most users never see the math behind it. If I extended this project, I'd add genre similarity (so "metal" and "rock" get partial credit) and a diversity penalty to prevent the top results from being too repetitive.
 
 ---
 
