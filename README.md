@@ -88,25 +88,25 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
-
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+### Weight Shift: Genre Halved, Energy Doubled
+ 
+Changed genre weight from 2.0 to 1.0 and energy weight from 1.0 to 2.0, then re-ran the Classical Energetic edge case profile (classical/energetic/energy 0.9).
+ 
+**Before (original weights):** Winter Sonata (classical/melancholic/energy 0.2) ranked #1 with 3.38 points. The genre match of +2.0 carried it to the top despite a terrible energy score of +0.30.
+ 
+**After (experiment weights):** Winter Sonata dropped to #5 with 2.69 points. Block Party (hip-hop/energetic/energy 0.85) rose to #1 with 3.58. The doubled energy weight meant that songs actually matching the user's desired energy level were properly rewarded.
+ 
+**Takeaway:** The change made recommendations more accurate for edge cases where genre and energy preferences conflict. However, for the standard Happy Pop profile, the original weights already worked well — Sunrise City stayed #1 either way. This suggests the original genre-heavy weighting works for typical users but fails for users with unusual or contradictory preferences.
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
-
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+- The catalog only has 20 songs. With 1–3 tracks per genre, the system runs out of strong matches quickly and starts recommending songs with no categorical connection.
+- Genre matching is exact — "indie pop" does not match "pop," and "metal" does not match "rock." Real listeners often enjoy related genres, but the system treats them as completely different.
+- The system does not understand lyrics, language, or cultural context. A Spanish-language latin track and an English pop track are compared purely on numerical attributes.
+- Genre dominance (2.0 out of 5.3 max points) can override energy and mood preferences entirely, creating a filter bubble where the system keeps recommending the user's stated genre even when the vibe is wrong.
+- There is no diversity logic — the top 5 could all be from the same artist or genre with no penalty.
 
 ---
 

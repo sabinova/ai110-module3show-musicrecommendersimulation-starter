@@ -29,10 +29,33 @@ def print_recommendations(profile_name: str, user_prefs: dict, songs: list, k: i
 def main() -> None:
     songs = load_songs("data/songs.csv")
 
-    # --- Default profile (Phase 3 verification) ---
+    # --- Profile 1: Default (Phase 3) ---
     print_recommendations(
         profile_name="Happy Pop Listener",
         user_prefs={"genre": "pop", "mood": "happy", "energy": 0.8, "likes_acoustic": False},
+        songs=songs,
+    )
+
+    # --- Profile 2: Chill Lofi Studier ---
+    print_recommendations(
+        profile_name="Chill Lofi Studier",
+        user_prefs={"genre": "lofi", "mood": "chill", "energy": 0.4, "likes_acoustic": True},
+        songs=songs,
+    )
+
+    # --- Profile 3: Intense Rock Gym-Goer ---
+    print_recommendations(
+        profile_name="Intense Rock Gym-Goer",
+        user_prefs={"genre": "rock", "mood": "intense", "energy": 0.9, "likes_acoustic": False},
+        songs=songs,
+    )
+
+    # --- Profile 4: Edge Case — Classical + Energetic (adversarial) ---
+    # No classical/energetic song exists in the catalog, and wanting
+    # high energy + acoustic is contradictory for most music.
+    print_recommendations(
+        profile_name="Classical Energetic (Edge Case)",
+        user_prefs={"genre": "classical", "mood": "energetic", "energy": 0.9, "likes_acoustic": True},
         songs=songs,
     )
 
