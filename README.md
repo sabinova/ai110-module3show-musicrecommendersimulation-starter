@@ -86,7 +86,7 @@ You can add more tests in `tests/test_recommender.py`.
 
 ---
 
-## Experiments You Tried
+## Experiments Tried
 
 ### Weight Shift: Genre Halved, Energy Doubled
  
