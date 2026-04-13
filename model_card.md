@@ -2,7 +2,7 @@
 
 ## 1. Model Name
 
-**VibeMatch 1.0**
+**VibeMatch**
 
 ---
 
@@ -66,10 +66,16 @@ Four user profiles were tested:
 
 ## 8. Future Work
 
-- **Genre similarity instead of exact match.** Treat "metal" and "rock" as related genres with a partial match score (e.g., +1.0 instead of +2.0 for related, +0.0 for unrelated). This would fix the Iron Descent problem.
-- **User-specified valence and danceability targets** instead of the fixed 0.5 midpoint, so the system can distinguish between users who want high-energy dance music vs. high-energy headbanging music.
-- **Diversity penalty** that prevents the top 5 from being all the same genre or artist, forcing the system to surface variety instead of repeating the closest matches.
-
+**Implemented in optional extensions:**
+- **Multiple scoring modes** (genre-first, mood-first, energy-focused) so users can switch strategies depending on what they care about most.
+- **Diversity penalty** that limits same genre/artist in top results, forcing the system to surface variety. For the Lofi profile, this replaced the 3rd lofi track with a country song the system would never have recommended otherwise.
+- **Advanced features** (popularity and release decade) as tiebreaker scores.
+- **Visual table output** with mode and diversity status displayed.
+ 
+**Still remaining:**
+- **Genre similarity instead of exact match.** Treat "metal" and "rock" as related genres with a partial match score. This would fix the Iron Descent problem where a clearly relevant metal song ranks low for rock fans.
+- **User-specified valence and danceability targets** instead of the fixed 0.5 midpoint, so the system can distinguish users who want high-energy dance music vs. high-energy headbanging music.
+- **Proactive diversity in scoring** rather than the current reactive penalty approach — blend variety directly into the scoring function instead of penalizing after the fact.
 ---
 
 ## 9. Personal Reflection

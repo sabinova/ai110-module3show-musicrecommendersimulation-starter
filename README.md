@@ -100,6 +100,22 @@ Changed genre weight from 2.0 to 1.0 and energy weight from 1.0 to 2.0, then re-
 
 ---
 
+## Optional Extensions Implemented
+ 
+### Challenge 1: Advanced Song Features
+Added `popularity` (0–100) and `release_decade` (1990–2020) columns to the dataset. The scoring logic awards a small popularity boost (up to +0.30 for a chart-topping song) and an era match bonus (up to +0.20 for recent tracks, decaying by 25% per decade). These act as tiebreakers rather than primary drivers.
+ 
+### Challenge 2: Multiple Scoring Modes
+Implemented four scoring strategies that shift the weight distribution: `balanced` (the original recipe), `genre-first` (genre weight 3.0), `mood-first` (mood weight 3.0), and `energy-focused` (energy weight 3.0). The mode is passed as a parameter to `recommend_songs()`. Testing the Rock Gym-Goer profile across all four modes showed that `mood-first` pulled EDM and pop "intense" songs up to #2 and #3, while `energy-focused` made all top-5 scores cluster tightly since every high-energy song scored well regardless of genre.
+ 
+### Challenge 3: Diversity and Fairness Logic
+Added a diversity penalty that limits the same genre to 2 appearances and the same artist to 1 appearance in the top results. Once a genre or artist exceeds its limit, subsequent songs get a -1.5 score penalty. For the Lofi profile, this dropped Focus Flow (the 3rd lofi track) out of the top 5 and replaced it with Porch Swing Evenings (country), surfacing variety the system would otherwise never recommend.
+ 
+### Challenge 4: Visual Summary Table
+Replaced the plain-text output with a formatted ASCII table showing rank, title, artist, genre, and score in aligned columns, followed by a detailed reasoning section. The table header displays the active scoring mode and diversity toggle status.
+ 
+---
+
 ## Limitations and Risks
 
 - The catalog only has 20 songs. With 1–3 tracks per genre, the system runs out of strong matches quickly and starts recommending songs with no categorical connection.
